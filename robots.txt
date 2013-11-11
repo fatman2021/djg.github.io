@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://djg.github.io/sitemap.xml 
+Sitemap: http://djg.hootwag.com/sitemap.xml 

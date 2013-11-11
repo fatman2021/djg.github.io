@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://djg.github.io/atom.xml" rel="self"/>
-  <link href="http://djg.github.io/"/>
-  <updated>2013-11-07T14:27:26+10:00</updated>
-  <id>http://djg.github.io/</id>
+  <title><![CDATA[Kamikaze Devilphish]]></title>
+  <link href="http://djg.hootwag.com/atom.xml" rel="self"/>
+  <link href="http://djg.hootwag.com/"/>
+  <updated>2013-11-11T17:06:16+10:00</updated>
+  <id>http://djg.hootwag.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Dan Glastonbury]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Memory Usage]]></title>
+    <link href="http://djg.hootwag.com/blog/2013/11/11/memory-usage/"/>
+    <updated>2013-11-11T15:28:00+10:00</updated>
+    <id>http://djg.hootwag.com/blog/2013/11/11/memory-usage</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
 </feed>

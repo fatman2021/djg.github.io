@@ -1,15 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://djg.github.io/blog/archives/</loc>
-        <lastmod>2013-11-07T14:24:06+10:00</lastmod>
+        <loc>http://djg.hootwag.com/blog/2013/11/11/memory-usage/</loc>
+        <lastmod>2013-11-11T15:28:57+10:00</lastmod>
     </url>
     <url>
-        <loc>http://djg.github.io/</loc>
-        <lastmod>2013-11-07T14:24:06+10:00</lastmod>
+        <loc>http://djg.hootwag.com/android/jb-graphics-classes.html</loc>
+        <lastmod>2013-11-11T17:05:21+10:00</lastmod>
     </url>
     <url>
-        <loc>http://djg.github.io/robots.txt</loc>
+        <loc>http://djg.hootwag.com/b2g/pmem-usage.html</loc>
+        <lastmod>2013-11-08T21:25:36+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://djg.hootwag.com/blog/archives/</loc>
+        <lastmod>2013-11-11T15:28:57+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://djg.hootwag.com/</loc>
+        <lastmod>2013-11-11T15:28:57+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://djg.hootwag.com/robots.txt</loc>
         <lastmod>2013-11-07T14:24:06+10:00</lastmod>
     </url>
 </urlset>
