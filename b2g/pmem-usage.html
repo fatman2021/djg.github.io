@@ -9,8 +9,7 @@
   <meta name="author" content="Dan Glastonbury">
 
   
-  <meta name="description" content="Pmem-usage Nov 8th, 2013 canvas { margin: 30px auto; background-color: #FFF;
-} Start up home screen Start up contacts app Tap Cog icon Tap Export &hellip;">
+  <meta name="description" content="Pmem-usage Nov 8th, 2013 Start up home screen Start up contacts app Tap Cog icon Tap Export Contacts Tap Memory Card Tap Select AllTap Export Tap on &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,40 +83,61 @@
 <time datetime="2013-11-08T21:20:00+10:00" pubdate data-updated="true">Nov 8<span>th</span>, 2013</time></p>
   </header>
   
-  <style type="text/css">
-canvas {
-    margin: 30px auto;
-    background-color: #FFF;
-}
-</style>
+  
+
 <p>Start up home screen</p>
-<canvas id='a' width='161' height='161'></canvas>
+
+
+<p><canvas id='a' width='161' height='161'></canvas></p>
+
 <hr />
+
 <p>Start up contacts app</p>
+
+
 <div>
 <canvas id='b1' width='161' height='161'></canvas>
 <canvas id='b2' width='161' height='161'></canvas>
 <canvas id='b3' width='161' height='161'></canvas>
 <canvas id='b4' width='161' height='161'></canvas>
 </div>
+
+
 <hr />
+
 <p>Tap Cog icon</p>
+
+
 <div>
 <canvas id='c1' width='161' height='161'></canvas>
 <canvas id='c2' width='161' height='161'></canvas>
 </div>
+
+
 <hr />
+
 <p>Tap Export Contacts</p>
-<canvas id='d' width='161' height='161'></canvas>
+
+
+<p><canvas id='d' width='161' height='161'></canvas></p>
+
 <hr />
+
 <p>Tap Memory Card</p>
+
+
 <div>
 <canvas id='e1' width='161' height='161'></canvas>
 <canvas id='e2' width='161' height='161'></canvas>
 </div>
+
+
 <hr />
+
 <p>Tap Select All<br />Tap Export</p>
-<canvas id='f1' width='161' height='161'></canvas>
+
+
+<p><canvas id='f1' width='161' height='161'></canvas>
 <canvas id='f2' width='161' height='161'></canvas>
 <canvas id='f3' width='161' height='161'></canvas>
 <canvas id='f4' width='161' height='161'></canvas>
@@ -126,27 +146,46 @@ canvas {
 <canvas id='f7' width='161' height='161'></canvas>
 <canvas id='f8' width='161' height='161'></canvas>
 <canvas id='f9' width='161' height='161'></canvas>
-<canvas id='fa' width='161' height='161'></canvas>
+<canvas id='fa' width='161' height='161'></canvas></p>
+
 <hr />
+
 <p>Tap on memory card again</p>
-<canvas id='g1' width='161' height='161'></canvas>
-<canvas id='g2' width='161' height='161'></canvas>
+
+
+<p><canvas id='g1' width='161' height='161'></canvas>
+<canvas id='g2' width='161' height='161'></canvas></p>
+
 <hr />
+
 <p>Tap select all<br />Tap Search</p>
-<canvas id='h1' width='161' height='161'></canvas>
-<canvas id='h2' width='161' height='161'></canvas>
+
+
+<p><canvas id='h1' width='161' height='161'></canvas>
+<canvas id='h2' width='161' height='161'></canvas></p>
+
 <p>Next allocations fail because of out-of-memory in pmem, overflow into virtual memory</p>
+
+
 <pre>alloc(320, 452, 2, 0x00000133)
 alloc(320, 452, 2, 0x00000133)
 alloc(320, 452, 2, 0x00000133)
 alloc(320, 452, 2, 0x00000133)</pre>
+
+
 <p>before a number of frees</p>
-<canvas id='h3' width='161' height='161'></canvas>
+
+
+<p><canvas id='h3' width='161' height='161'></canvas>
 <canvas id='h4' width='161' height='161'></canvas>
 <canvas id='h5' width='161' height='161'></canvas>
-<canvas id='h6' width='161' height='161'></canvas>
+<canvas id='h6' width='161' height='161'></canvas></p>
+
 <p>Free all four of the &#8216;overflow&#8217; buffers</p>
-<hr />
+
+
+
+
 <script type="text/javascript">
 var block_size = 4096;
 var blocks = 2048;
@@ -667,6 +706,8 @@ draw('h6',
       { size: 327680, offset: 4341760 },
       { size: 327680, offset: 6553600 }], '#0F0');
 </script>
+
+
   
     <footer>
       <p class="meta">
