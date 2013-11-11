@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>pmem-usage - Kamikaze Devilphish</title>
+  <title>pmem usage in contacts app - Kamikaze Devilphish</title>
   <meta name="author" content="Dan Glastonbury">
 
   
-  <meta name="description" content="Pmem-usage Nov 8th, 2013 Start up home screen Start up contacts app Tap Cog icon Tap Export Contacts Tap Memory Card Tap Select AllTap Export Tap on &hellip;">
+  <meta name="description" content="Pmem Usage in Contacts App Nov 8th, 2013 Start up home screen Start up contacts app Tap Cog icon: Tap Export Contacts: Tap Memory Card: Tap Select &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,7 +67,7 @@
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Pmem-usage</h1>
+    <h1 class="entry-title">Pmem Usage in Contacts App</h1>
     <p class="meta">
 
 
@@ -87,13 +87,11 @@
 
 <p>Start up home screen</p>
 
-
 <p><canvas id='a' width='161' height='161'></canvas></p>
 
 <hr />
 
 <p>Start up contacts app</p>
-
 
 <div>
 <canvas id='b1' width='161' height='161'></canvas>
@@ -105,32 +103,23 @@
 
 <hr />
 
-<p>Tap Cog icon</p>
+<p>Tap Cog icon:</p>
 
-
-<div>
-<canvas id='c1' width='161' height='161'></canvas>
-<canvas id='c2' width='161' height='161'></canvas>
-</div>
-
+<p><canvas id='c1' width='161' height='161'></canvas>
+<canvas id='c2' width='161' height='161'></canvas></p>
 
 <hr />
 
-<p>Tap Export Contacts</p>
-
+<p>Tap Export Contacts:</p>
 
 <p><canvas id='d' width='161' height='161'></canvas></p>
 
 <hr />
 
-<p>Tap Memory Card</p>
+<p>Tap Memory Card:</p>
 
-
-<div>
-<canvas id='e1' width='161' height='161'></canvas>
-<canvas id='e2' width='161' height='161'></canvas>
-</div>
-
+<p><canvas id='e1' width='161' height='161'></canvas>
+<canvas id='e2' width='161' height='161'></canvas></p>
 
 <hr />
 
@@ -150,8 +139,7 @@
 
 <hr />
 
-<p>Tap on memory card again</p>
-
+<p>Tap on memory card again:</p>
 
 <p><canvas id='g1' width='161' height='161'></canvas>
 <canvas id='g2' width='161' height='161'></canvas></p>
@@ -160,31 +148,25 @@
 
 <p>Tap select all<br />Tap Search</p>
 
-
 <p><canvas id='h1' width='161' height='161'></canvas>
 <canvas id='h2' width='161' height='161'></canvas></p>
 
-<p>Next allocations fail because of out-of-memory in pmem, overflow into virtual memory</p>
+<p>Next allocations fail because of out-of-memory in pmem, overflow into virtual memory:</p>
 
-
-<pre>alloc(320, 452, 2, 0x00000133)
+<pre><code>alloc(320, 452, 2, 0x00000133)
 alloc(320, 452, 2, 0x00000133)
 alloc(320, 452, 2, 0x00000133)
-alloc(320, 452, 2, 0x00000133)</pre>
+alloc(320, 452, 2, 0x00000133)
+</code></pre>
 
-
-<p>before a number of frees</p>
-
+<p>before a number of frees:</p>
 
 <p><canvas id='h3' width='161' height='161'></canvas>
 <canvas id='h4' width='161' height='161'></canvas>
 <canvas id='h5' width='161' height='161'></canvas>
 <canvas id='h6' width='161' height='161'></canvas></p>
 
-<p>Free all four of the &#8216;overflow&#8217; buffers</p>
-
-
-
+<p>Free all four of the &lsquo;overflow&rsquo; buffers</p>
 
 <script type="text/javascript">
 var block_size = 4096;
