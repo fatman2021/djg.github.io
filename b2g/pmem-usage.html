@@ -9,7 +9,8 @@
   <meta name="author" content="Dan Glastonbury">
 
   
-  <meta name="description" content="Pmem-usage Nov 8th, 2013 This is a test Nov 8th, 2013 Tweet Recent Posts GitHub Repos Status updating... @djg on GitHub $(document).ready(function &hellip;">
+  <meta name="description" content="Pmem-usage Nov 8th, 2013 canvas { margin: 30px auto; background-color: #FFF;
+} Start up home screen Start up contacts app Tap Cog icon Tap Export &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,8 +84,589 @@
 <time datetime="2013-11-08T21:20:00+10:00" pubdate data-updated="true">Nov 8<span>th</span>, 2013</time></p>
   </header>
   
-  This is a test
+  <style type="text/css">
+canvas {
+    margin: 30px auto;
+    background-color: #FFF;
+}
+</style>
+<p>Start up home screen</p>
+<canvas id='a' width='161' height='161'></canvas>
+<hr />
+<p>Start up contacts app</p>
+<div>
+<canvas id='b1' width='161' height='161'></canvas>
+<canvas id='b2' width='161' height='161'></canvas>
+<canvas id='b3' width='161' height='161'></canvas>
+<canvas id='b4' width='161' height='161'></canvas>
+</div>
+<hr />
+<p>Tap Cog icon</p>
+<div>
+<canvas id='c1' width='161' height='161'></canvas>
+<canvas id='c2' width='161' height='161'></canvas>
+</div>
+<hr />
+<p>Tap Export Contacts</p>
+<canvas id='d' width='161' height='161'></canvas>
+<hr />
+<p>Tap Memory Card</p>
+<div>
+<canvas id='e1' width='161' height='161'></canvas>
+<canvas id='e2' width='161' height='161'></canvas>
+</div>
+<hr />
+<p>Tap Select All<br />Tap Export</p>
+<canvas id='f1' width='161' height='161'></canvas>
+<canvas id='f2' width='161' height='161'></canvas>
+<canvas id='f3' width='161' height='161'></canvas>
+<canvas id='f4' width='161' height='161'></canvas>
+<canvas id='f5' width='161' height='161'></canvas>
+<canvas id='f6' width='161' height='161'></canvas>
+<canvas id='f7' width='161' height='161'></canvas>
+<canvas id='f8' width='161' height='161'></canvas>
+<canvas id='f9' width='161' height='161'></canvas>
+<canvas id='fa' width='161' height='161'></canvas>
+<hr />
+<p>Tap on memory card again</p>
+<canvas id='g1' width='161' height='161'></canvas>
+<canvas id='g2' width='161' height='161'></canvas>
+<hr />
+<p>Tap select all<br />Tap Search</p>
+<canvas id='h1' width='161' height='161'></canvas>
+<canvas id='h2' width='161' height='161'></canvas>
+<p>Next allocations fail because of out-of-memory in pmem, overflow into virtual memory</p>
+<pre>alloc(320, 452, 2, 0x00000133)
+alloc(320, 452, 2, 0x00000133)
+alloc(320, 452, 2, 0x00000133)
+alloc(320, 452, 2, 0x00000133)</pre>
+<p>before a number of frees</p>
+<canvas id='h3' width='161' height='161'></canvas>
+<canvas id='h4' width='161' height='161'></canvas>
+<canvas id='h5' width='161' height='161'></canvas>
+<canvas id='h6' width='161' height='161'></canvas>
+<p>Free all four of the &#8216;overflow&#8217; buffers</p>
+<hr />
+<script type="text/javascript">
+var block_size = 4096;
+var blocks = 2048;
+var dim = 16;
+var clusters = dim * dim;
+var blocks_per_cluster = blocks / clusters;
 
+function block_index(addr) {
+    return addr / block_size;
+}
+
+function draw_grid(ctx, w, h, step_w, step_h) {
+    ctx.save();
+
+    for (var x = 0.5; x < w; x += step_w) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+    }
+
+    for (var y = 0.5; y < h; y += step_h) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+    }
+
+    ctx.strokeStyle = '#EEE';
+    ctx.stroke();
+    ctx.restore();
+}
+
+function draw(name, data, color)
+{
+    color = color || '#000';
+
+    var m = [];
+
+    for (var i = 0; i < data.length; i++) {
+        var d = data[i];
+
+        var s = d.offset;
+        var e = s + d.size;
+        while (s < e) {
+            var blk_idx = block_index(s);
+            m[blk_idx] = 1;
+            s += block_size;
+        }
+    }
+
+    var canvas = document.getElementById(name);
+    var ctx = canvas.getContext('2d');
+    draw_grid(ctx, canvas.width, canvas.height, 10, 10);
+
+    ctx.save();
+
+    var i = 0;
+    for (var y = 0; y < dim; y++) {
+        for (var x = 0; x < dim; x++) {
+            var occupied = 0;
+            for (var b = 0; b < blocks_per_cluster; b++) {
+                occupied += (m[i++] || 0);
+            }
+
+            ctx.fillStyle = color;
+            ctx.globalAlpha = occupied / blocks_per_cluster;
+            ctx.fillRect(10*x+1, 10*y+1, 9, 9);
+        }
+    }
+
+    ctx.restore();
+}
+
+/* Start up home screen */
+draw('a',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }]);
+
+/* Start up contacts app */
+draw('b1',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }]);
+draw('b1',
+     [{ size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }], "#0F0");
+
+draw('b2',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }]);
+draw('b2',
+     [{ size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }], "#F00");
+
+draw('b3',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }]);
+draw('b3',
+     [{ size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }], "#0F0");
+
+draw('b4',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400  },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }]);
+draw('b4',
+     [{ size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }], "#F00");
+
+/* Tap Cog Icon */
+draw('c1',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }]);
+draw('c1',
+     [{ size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size:  20480, offset: 3686400 },
+      { size:  20480, offset: 3706880 },
+      { size:   8192, offset: 3727360 },
+      { size:   8192, offset: 3735552 },
+      { size:  40960, offset: 3743744 },
+      { size:  40960, offset: 3784704 }], '#0F0');
+
+draw('c2',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }]);
+draw('c2',
+     [{ size:  20480, offset: 3686400 },
+      { size:  20480, offset: 3706880 },
+      { size:   8192, offset: 3727360 },
+      { size:   8192, offset: 3735552 },
+      { size:  40960, offset: 3743744 },
+      { size:  40960, offset: 3784704 }], '#F00');
+
+/* Tap Export Contacts */
+draw('d',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }]);
+draw('d',
+     [{ size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 }], "#0F0");
+
+/* Tap Memory Card */
+draw('e1',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 }]);
+draw('e1',
+     [{ size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }], '#0F0');
+
+draw('e2',
+    [{ size: 614400, offset: 0 },
+     { size: 614400, offset: 614400 },
+     { size: 614400, offset: 2457600 },
+     { size: 614400, offset: 3072000 },
+     { size: 614400, offset: 3686400 },
+     { size: 614400, offset: 4300800 },
+     { size: 204800, offset: 4915200 },
+     { size: 204800, offset: 5120000 },
+     { size: 614400, offset: 5324800 },
+     { size: 614400, offset: 5939200 }]);
+draw('e2',
+     [{ size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 }], '#F00');
+
+/* Tap Select All & Tap export */
+// alloc
+draw('f1',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('f1',
+     [{ size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 6553600 },
+      { size: 614400, offset: 7168000 }], '#0F0');
+// free
+draw('f2',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 6553600 },
+      { size: 614400, offset: 7168000 }]);
+draw('f2',
+     [{ size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }], '#F00');
+// alloc
+draw('f3',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 6553600 },
+      { size: 614400, offset: 7168000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('f3',
+     [{ size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }], '#0F0');
+// free
+draw('f4',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 6553600 },
+      { size: 614400, offset: 7168000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('f4',
+     [{ size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 }], '#F00');
+// alloc
+draw('f5',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 6553600 },
+      { size: 614400, offset: 7168000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('f5',
+     [{ size:81920, offset: 4915200 },
+      { size:81920, offset: 4997120 }], '#0F0');
+// free
+draw('f6',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size:81920, offset: 4915200 },
+      { size:81920, offset: 4997120 }]);
+draw('f6',
+     [{ size: 614400, offset: 6553600 },
+      { size: 614400, offset: 7168000 }], '#F00');
+// alloc
+draw('f7',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size:81920, offset: 4915200 },
+      { size:81920, offset: 4997120 }]);
+draw('f7',
+     [{ size: 81919, offset: 5079040 },
+      { size: 81920, offset: 5160960 }], '#0F0');
+// free
+draw('f8',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 81919, offset: 5079040 },
+      { size: 81920, offset: 5160960 }]);
+draw('f8',
+     [{ size:81920, offset: 4915200 },
+      { size:81920, offset: 4997120 }], '#F00');
+// alloc
+draw('f9',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 81919, offset: 5079040 },
+      { size: 81920, offset: 5160960 }]);
+draw('f9',
+     [{ size: 81920, offset: 4915200 },
+      { size: 81920, offset: 5242880 }], '#0F0');
+// free
+draw('fa',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('fa',
+     [{ size: 81919, offset: 5079040 },
+      { size: 81920, offset: 5160960 },
+      { size: 81920, offset: 4915200 },
+      { size: 81920, offset: 5242880 }], '#F00');
+/* Tap on memory card again */
+draw('g1',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('g1',
+     [{ size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 }], '#0F0');
+
+draw('g2',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('g2',
+     [{ size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }], '#F00');
+
+/* Tap select all & Tap Search */
+draw('h1',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('h1',
+     [{ size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 122880, offset: 6553600 },
+      { size: 122880, offset: 6676480 },
+      { size:  40960, offset: 6799360 },
+      { size:  40960, offset: 6840320 },
+      { size: 614400, offset: 6881280 },
+      { size: 614400, offset: 7495680 }], '#0F0');
+
+draw('h2',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 122880, offset: 6553600 },
+      { size: 122880, offset: 6676480 },
+      { size:  40960, offset: 6799360 },
+      { size:  40960, offset: 6840320 },
+      { size: 614400, offset: 6881280 },
+      { size: 614400, offset: 7495680 }]);
+
+draw('h3',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size:  40960, offset: 6799360 },
+      { size:  40960, offset: 6840320 },
+      { size: 614400, offset: 6881280 },
+      { size: 614400, offset: 7495680 }]);
+draw('h3',
+     [{ size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 },
+      { size: 614400, offset: 3686400 },
+      { size: 614400, offset: 4300800 },
+      { size: 122880, offset: 6553600 },
+      { size: 122880, offset: 6676480 }], '#F00');
+
+draw('h4',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size:  40960, offset: 6799360 },
+      { size:  40960, offset: 6840320 },
+      { size: 614400, offset: 6881280 },
+      { size: 614400, offset: 7495680 }]);
+draw('h4',
+     [{ size: 614400, offset: 2457600 },
+      { size: 614400, offset: 3072000 }], '#0F0');
+
+draw('h5',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('h5',
+     [{ size:  40960, offset: 6799360 },
+      { size:  40960, offset: 6840320 },
+      { size: 614400, offset: 6881280 },
+      { size: 614400, offset: 7495680 }], '#F00');
+
+draw('h6',
+     [{ size: 614400, offset: 0 },
+      { size: 614400, offset: 614400 },
+      { size: 614400, offset: 1228800 },
+      { size: 614400, offset: 1843200 },
+      { size: 204800, offset: 4915200 },
+      { size: 204800, offset: 5120000 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 },
+      { size: 614400, offset: 5324800 },
+      { size: 614400, offset: 5939200 }]);
+draw('h6',
+     [{ size: 327680, offset: 3686400 },
+      { size: 327680, offset: 4014080 },
+      { size: 327680, offset: 4341760 },
+      { size: 327680, offset: 6553600 }], '#0F0');
+</script>
   
     <footer>
       <p class="meta">
